@@ -1,0 +1,42 @@
+{
+  "fields": [
+    {
+      "name": "firstName",
+      "label": "First Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "lastName",
+      "label": "Last Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "email",
+      "label": "Email",
+      "type": "mail",
+      "required": true
+    },
+    {
+      "name": "radiosGroup",
+      "label": "Gender",
+      "type": "radios",
+      "options": [
+        {
+          "label": "Male",
+          "value": "m"
+        },
+        {
+          "label": "Female",
+          "value": "f"
+        }
+      ]
+    },
+    {
+      "name": "subscription",
+      "label": "Send me News",
+      "type": "checkbox"
+    }
+  ]
+}
