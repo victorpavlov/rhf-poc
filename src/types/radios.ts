@@ -6,6 +6,6 @@ type option = {
 export type IRadios = {
   name: string;
   label: string;
-  options: option[]
-  defaultValue?: string;
+  control: any,
+  options?: option[]
 }

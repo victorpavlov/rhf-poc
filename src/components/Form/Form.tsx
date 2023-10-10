@@ -1,4 +1,7 @@
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import formSchema from '../../models/form-schema';
+import * as z from 'zod';
 import data from '../../data/form-data.json';
 import {
   Container,
@@ -6,72 +9,65 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
-  Radio,
   Button,
-  FormControl,
-  FormLabel,
-  RadioGroup,
 } from '@mui/material';
-import { IRadios } from '../../types';
+import Radios from '../Radios/Radios';
 
-type Inputs = {
-  firstName: string;
-  lastName: string;
-};
-
-const Radios = ({ name, label, options, defaultValue }: IRadios) => {
-  return (
-    <FormControl>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
-      <RadioGroup defaultValue={defaultValue} name={name}>
-        {options.map((option) => (
-          <FormControlLabel
-            key={`${name}-${option.value}`}
-            value={option.value}
-            control={<Radio />}
-            label={option.label}
-          />
-        ))}
-      </RadioGroup>
-    </FormControl>
-  );
-};
+type FormSchema = z.infer<typeof formSchema>;
 
 export default function Form() {
-  const { fields } = data;
-
-  const { control, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const fields = formSchema.keyof()._def.values;
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+  });
+  const onSubmit: SubmitHandler<FormSchema> = (d) => console.log(d);
 
   return (
-    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <Container maxWidth='sm'>
       <h1>Form</h1>
+      {errors.firstName?.message}
+      {errors.lastName?.message}
+      {errors.email?.message}
+      {errors.gender?.message}
+      {errors.subscription?.message}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          {fields.map((f) => (
-            <Controller
-              key={f.name}
-              name={f.name}
-              control={control}
-              render={({ field }) => {
-                switch (f.type) {
-                  case 'checkbox':
-                    return (
+          {fields.map((f) => {
+            switch (data[f].type) {
+              case 'checkbox':
+                return (
+                  <Controller
+                    key={f}
+                    name={f}
+                    control={control}
+                    render={({ field }) => (
                       <FormControlLabel
-                        control={<Checkbox />}
-                        {...f}
+                        {...data[f]}
                         {...field}
+                        control={<Checkbox />}
                       />
-                    );
-                  case 'radios':
-                    return <Radios {...f} {...field} />;
-                  default:
-                    return <TextField {...f} {...field} />;
-                }
-              }}
-            />
-          ))}
+                    )}
+                  />
+                );
+              case 'radios':
+                return <Radios key={f} name={f} {...data[f]} control={control} />;
+              default:
+                return (
+                  <Controller
+                    key={f}
+                    name={f}
+                    control={control}
+                    render={({ field }) => (
+                      <TextField {...data[f]} {...field} />
+                    )}
+                  />
+                );
+            }
+          })}
           <Button variant='contained' type='submit'>
             Submit
           </Button>
