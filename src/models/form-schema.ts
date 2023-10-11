@@ -6,6 +6,7 @@ const formSchema = z.object({
   email: z.string().email({message: 'Wrong Email format'}),
   gender: z.string(),
   variants: z.any(),
+  freeText: z.string(),
   subscription: z.boolean().or(z.string()).optional(),
 });
 

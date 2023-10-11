@@ -11,6 +11,7 @@ import {
   Checkbox,
   FormControlLabel,
   Button,
+  Input,
 } from '@mui/material';
 import Radios from '../Radios/Radios';
 import Checkboxes from '../Checkboxes/Checkboxes';
@@ -30,7 +31,7 @@ export default function Form() {
     defaultValues,
   });
   const onSubmit: SubmitHandler<FormSchema> = (d) => console.log(d);
-  
+
   return (
     <Container maxWidth='sm'>
       <h1>Form</h1>
@@ -69,7 +70,13 @@ export default function Form() {
                     name={f}
                     control={control}
                     render={({ field }) => (
-                      <TextField {...data[f]} {...field} error={!!errors[f]} helperText={error} />
+                      <TextField
+                        {...data[f]}
+                        {...field}
+                        multiline={data[f].type === 'textarea'}
+                        error={!!errors[f]}
+                        helperText={error}
+                      />
                     )}
                   />
                 );

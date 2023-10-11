@@ -42,6 +42,11 @@
       }
     ]
   },
+  "freeText": {
+    "type": "textarea",
+    "label": "Free text field",
+    "minRows": 3
+  },
   "subscription": {
     "type": "checkbox",
     "label": "Send me News"
