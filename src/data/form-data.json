@@ -1,15 +1,18 @@
 {
   "firstName": {
     "type": "text",
-    "label": "First Name"
+    "label": "First Name",
+    "required": true
   },
   "lastName": {
     "type": "text",
-    "label": "Last Name"
+    "label": "Last Name",
+    "required": true
   },
   "email": {
     "type": "mail",
-    "label": "Email"
+    "label": "Email",
+    "required": true
   },
   "gender": {
     "type": "radios",
@@ -22,6 +25,20 @@
       {
         "label": "Female",
         "value": "f"
+      }
+    ]
+  },
+  "variants": {
+    "type": "checkboxes",
+    "label": "Variants",
+    "options": [
+      {
+        "label": "First",
+        "value": "f"
+      },
+      {
+        "label": "Second",
+        "value": "s"
       }
     ]
   },

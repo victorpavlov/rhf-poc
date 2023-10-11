@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import formSchema from '../../models/form-schema';
@@ -12,31 +13,31 @@ import {
   Button,
 } from '@mui/material';
 import Radios from '../Radios/Radios';
+import Checkboxes from '../Checkboxes/Checkboxes';
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function Form() {
   const fields = formSchema.keyof()._def.values;
+  const defaultValues = Object.fromEntries(fields.map((v) => [v, '']));
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
+    defaultValues,
   });
   const onSubmit: SubmitHandler<FormSchema> = (d) => console.log(d);
-
+  
   return (
     <Container maxWidth='sm'>
       <h1>Form</h1>
-      {errors.firstName?.message}
-      {errors.lastName?.message}
-      {errors.email?.message}
-      {errors.gender?.message}
-      {errors.subscription?.message}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           {fields.map((f) => {
+            const error = errors[f]?.message as ReactNode;
             switch (data[f].type) {
               case 'checkbox':
                 return (
@@ -54,7 +55,13 @@ export default function Form() {
                   />
                 );
               case 'radios':
-                return <Radios key={f} name={f} {...data[f]} control={control} />;
+                return (
+                  <Radios key={f} name={f} {...data[f]} control={control} />
+                );
+              case 'checkboxes':
+                return (
+                  <Checkboxes key={f} name={f} {...data[f]} control={control} />
+                );
               default:
                 return (
                   <Controller
@@ -62,13 +69,13 @@ export default function Form() {
                     name={f}
                     control={control}
                     render={({ field }) => (
-                      <TextField {...data[f]} {...field} />
+                      <TextField {...data[f]} {...field} error={!!errors[f]} helperText={error} />
                     )}
                   />
                 );
             }
           })}
-          <Button variant='contained' type='submit'>
+          <Button variant='contained' type='submit' size='large'>
             Submit
           </Button>
         </Stack>

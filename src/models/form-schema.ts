@@ -1,11 +1,12 @@
 import * as z from 'zod';
 
 const formSchema = z.object({
-  firstName: z.string().min(3, {message: 'Required'}),
-  lastName: z.string().min(3, {message: 'Required'}),
-  email: z.string().email({message: 'Wrong format'}),
+  firstName: z.string().min(2, {message: 'First Name length should be more than 2 characters'}),
+  lastName: z.string().min(2, {message: 'First Name length should be more than 2 characters'}),
+  email: z.string().email({message: 'Wrong Email format'}),
   gender: z.string(),
-  subscription: z.boolean(),
+  variants: z.any(),
+  subscription: z.boolean().or(z.string()).optional(),
 });
 
 export default formSchema;
