@@ -11,7 +11,6 @@ import {
   Checkbox,
   FormControlLabel,
   Button,
-  Input,
 } from '@mui/material';
 import Radios from '../Radios/Radios';
 import Checkboxes from '../Checkboxes/Checkboxes';
